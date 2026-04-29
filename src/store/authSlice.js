@@ -6,37 +6,46 @@ const USERS = [
 ];
 
 const generateMockJWT = (user) => {
-  const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-  const payload = btoa(JSON.stringify({
+  const header = btoa(encodeURIComponent(JSON.stringify({ alg: 'HS256', typ: 'JWT' })));
+  const payload = btoa(encodeURIComponent(JSON.stringify({
     username: user.username,
     role: user.role,
     exp: Date.now() + 7 * 24 * 60 * 60 * 1000 // 7 days from now
-  }));
-  const signature = btoa('mock-signature');
+  })));
+  const signature = btoa(encodeURIComponent('mock-signature'));
   return `${header}.${payload}.${signature}`;
 };
 
 const verifyMockJWT = (token) => {
   try {
     const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(atob(parts[1]));
+    if (parts.length !== 3) {
+      console.error('Invalid token format');
+      return null;
+    }
+    const payload = JSON.parse(decodeURIComponent(atob(parts[1])));
     if (payload.exp < Date.now()) {
+      console.error('Token expired');
       return null;
     }
     return { username: payload.username, role: payload.role };
   } catch (e) {
+    console.error('Token verification error:', e);
     return null;
   }
 };
 
-const token = localStorage.getItem('token');
 let initialUser = null;
-if (token) {
-  initialUser = verifyMockJWT(token);
-  if (!initialUser) {
-    localStorage.removeItem('token');
+try {
+  const token = localStorage.getItem('token');
+  if (token) {
+    initialUser = verifyMockJWT(token);
+    if (!initialUser) {
+      localStorage.removeItem('token');
+    }
   }
+} catch (error) {
+  console.error("localStorage access failed:", error);
 }
 
 const authSlice = createSlice({

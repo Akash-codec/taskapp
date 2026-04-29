@@ -4,12 +4,14 @@ This is a minimal, simple React application built with Tailwind CSS v4 and Redux
 
 ## Core Features & Functionality
 
-1. **Authentication (Login)**
-   - The application has a simulated login system managed by Redux (`authSlice.js`).
+1. **Authentication (Login & Mock JWT)**
+   - The application uses a simulated login system managed by Redux (`authSlice.js`), verifying credentials against a predefined `USERS` array.
    - Hardcoded credentials are provided for testing:
      - **Admin**: `admin` / `admin123`
      - **Staff**: `staff` / `staff123`
-   - Unauthorized users trying to access any page will be redirected to the `/login` route.
+   - **Mock JWT System**: Upon successful login, a base64-encoded mock JSON Web Token (JWT) is generated. This token contains user details and a 7-day expiration timestamp (`exp`).
+   - **Session Persistence**: The generated token is stored in the browser's `localStorage`. On application load, Redux decodes the token, verifies the 7-day expiration, and automatically restores the user session if the token is still valid.
+   - Unauthorized users or those with expired tokens attempting to access any protected page are redirected to the `/login` route.
 
 2. **Role-Based Access Control (RBAC)**
    - **Admin Role**: Has full access. An admin can view the list of vouchers, create new vouchers, edit existing vouchers, and delete vouchers.
