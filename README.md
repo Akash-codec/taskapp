@@ -46,3 +46,27 @@ This is a minimal, simple React application built with Tailwind CSS v4 and Redux
    ```
 
 3. Open your browser and navigate to the local server URL provided by Vite. Use the demo credentials to log in!
+
+## Interview Questions
+
+Here are some potential interview questions based on the architecture and features of this Voucher Management System:
+
+**React & Routing**
+1. **How do you implement protected routes in a React application?** 
+   *Focus on how you prevent unauthenticated users from accessing protected pages and redirect them to the login screen.*
+2. **How is Role-Based Access Control (RBAC) implemented on the frontend?**
+   *Discuss how you conditionally render UI elements (like hiding the Edit and Delete buttons for Staff) and restrict route access based on the user's role.*
+
+**State Management (Redux Toolkit)**
+3. **Why did you choose Redux Toolkit over the Context API for this project?**
+   *Explain the benefits of Redux Toolkit for managing complex, global states like authentication and voucher data.*
+4. **How do you handle state persistence across page reloads?**
+   *Discuss strategies for keeping the user logged in and maintaining voucher data when the browser is refreshed (e.g., using `localStorage` or `sessionStorage`).*
+5. **What is the purpose of a Redux "Slice"?**
+   *Explain how `createSlice` simplifies Redux by combining reducers and action creators into a single file.*
+
+**General Architecture**
+6. **How would you secure the authentication process in a real-world scenario compared to this mock setup?**
+   *Discuss JWTs, HTTP-only cookies, password hashing, and communicating with a real backend API.*
+7. **What are the benefits of using a utility-first CSS framework like Tailwind CSS?**
+   *Discuss rapid prototyping, smaller CSS bundle sizes, and the ease of applying minimal UI designs directly in the component markup.*

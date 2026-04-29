@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/authSlice';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, clearError } from '../store/authSlice';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
+
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin123') {
-      dispatch(login({ username, role: 'admin' }));
-    } else if (username === 'staff' && password === 'staff123') {
-      dispatch(login({ username, role: 'staff' }));
-    } else {
-      alert('Invalid credentials');
-    }
+    dispatch(login({ username, password }));
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="p-8 border-2 border-gray-600 bg-white shadow-sm w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
+        {error && <div className="mb-4 p-2 bg-red-100 text-red-700 text-sm rounded text-center">{error}</div>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div>
             <label className="block mb-1 text-sm font-semibold text-gray-700">Username</label>
